@@ -13,6 +13,7 @@
 		3604F2152C74055300F46C62 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3604F2132C74055300F46C62 /* Main.storyboard */; };
 		3604F2172C74055500F46C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3604F2162C74055500F46C62 /* Assets.xcassets */; };
 		3604F21A2C74055500F46C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3604F2182C74055500F46C62 /* LaunchScreen.storyboard */; };
+		3604F2222C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3604F2212C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		3604F2162C74055500F46C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3604F2192C74055500F46C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3604F21B2C74055500F46C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3604F2212C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				3604F20D2C74055300F46C62 /* AppDelegate.swift */,
 				3604F20F2C74055300F46C62 /* SceneDelegate.swift */,
 				3604F2112C74055300F46C62 /* ViewController.swift */,
+				3604F2212C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift */,
 				3604F2132C74055300F46C62 /* Main.storyboard */,
 				3604F2162C74055500F46C62 /* Assets.xcassets */,
 				3604F2182C74055500F46C62 /* LaunchScreen.storyboard */,
@@ -140,6 +143,7 @@
 			files = (
 				3604F2122C74055300F46C62 /* ViewController.swift in Sources */,
 				3604F20E2C74055300F46C62 /* AppDelegate.swift in Sources */,
+				3604F2222C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift in Sources */,
 				3604F2102C74055300F46C62 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
