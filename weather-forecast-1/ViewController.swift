@@ -9,27 +9,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private var backgroundImageName = "background"
-    private var primaryColor = "appPrimaryColor"
-    private var softGray = "softGray"
-    private var sunIcon = "sunIcon"
-    
-    
-    private func cityName() -> String {
-        return "Aparecida de Goiânia"
-    }
-    
-    private func temperatureValue() -> String {
-        return "\(32)ºC"
-    }
-    
-    private func weatherIconName() -> String {
-        return sunIcon
-    }
     
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: backgroundImageName)
+        view.image = UIImage.background
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
         return view
@@ -53,7 +36,7 @@ class ViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 20)
         label.text = cityName()
         label.textAlignment = .center
-        label.textColor = UIColor(named: primaryColor)
+        label.textColor = UIColor.appPrimaryColor
         
         return label
     }()
@@ -64,14 +47,14 @@ class ViewController: UIViewController {
         label.text = temperatureValue()
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 72, weight: .bold)
-        label.textColor = UIColor(named: primaryColor)
+        label.textColor = UIColor.appPrimaryColor
         
         return label
     }()
 
     private lazy var weatherIcon: UIImageView = {
         let icon = UIImageView()
-        icon.image = UIImage(named: weatherIconName())
+        icon.image = weatherImage()
         icon.translatesAutoresizingMaskIntoConstraints = false
         
         return icon
@@ -148,7 +131,7 @@ class ViewController: UIViewController {
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 3
-        stackView.backgroundColor = UIColor(named: softGray)
+        stackView.backgroundColor = UIColor.softGrey
         stackView.layer.cornerRadius = 8
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24)
@@ -296,7 +279,7 @@ class ViewController: UIViewController {
 
 extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 24
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

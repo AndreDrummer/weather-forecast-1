@@ -14,6 +14,8 @@
 		3604F2172C74055500F46C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3604F2162C74055500F46C62 /* Assets.xcassets */; };
 		3604F21A2C74055500F46C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3604F2182C74055500F46C62 /* LaunchScreen.storyboard */; };
 		3604F2222C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3604F2212C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift */; };
+		3604F22B2C753BC400F46C62 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3604F22A2C753BC400F46C62 /* Extensions.swift */; };
+		3604F22E2C753C8700F46C62 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3604F22D2C753C8700F46C62 /* API.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		3604F2192C74055500F46C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3604F21B2C74055500F46C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3604F2212C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastCollectionViewCell.swift; sourceTree = "<group>"; };
+		3604F22A2C753BC400F46C62 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3604F22D2C753C8700F46C62 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,8 @@
 		3604F20C2C74055300F46C62 /* weather-forecast-1 */ = {
 			isa = PBXGroup;
 			children = (
+				3604F22C2C753C6600F46C62 /* Connector */,
+				3604F2232C7538BE00F46C62 /* Shared */,
 				3604F20D2C74055300F46C62 /* AppDelegate.swift */,
 				3604F20F2C74055300F46C62 /* SceneDelegate.swift */,
 				3604F2112C74055300F46C62 /* ViewController.swift */,
@@ -68,6 +74,22 @@
 				3604F21B2C74055500F46C62 /* Info.plist */,
 			);
 			path = "weather-forecast-1";
+			sourceTree = "<group>";
+		};
+		3604F2232C7538BE00F46C62 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				3604F22A2C753BC400F46C62 /* Extensions.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		3604F22C2C753C6600F46C62 /* Connector */ = {
+			isa = PBXGroup;
+			children = (
+				3604F22D2C753C8700F46C62 /* API.swift */,
+			);
+			path = Connector;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,9 +163,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3604F22B2C753BC400F46C62 /* Extensions.swift in Sources */,
 				3604F2122C74055300F46C62 /* ViewController.swift in Sources */,
 				3604F20E2C74055300F46C62 /* AppDelegate.swift in Sources */,
 				3604F2222C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift in Sources */,
+				3604F22E2C753C8700F46C62 /* API.swift in Sources */,
 				3604F2102C74055300F46C62 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

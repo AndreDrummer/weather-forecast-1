@@ -29,7 +29,7 @@ class HourlyForecastCollectionViewCell: UICollectionViewCell {
     
     private lazy var weatherIcon: UIImageView = {
         let imageIcon = UIImageView()
-        imageIcon.image = UIImage(named: "sunIcon")
+        imageIcon.image = weatherImage()
         imageIcon.translatesAutoresizingMaskIntoConstraints = false
         imageIcon.contentMode = .scaleAspectFit
         
