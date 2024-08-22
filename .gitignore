@@ -10,4 +10,4 @@ DerivedData/
 .build/
 
 # Other files
-OpenWeatherApiKey.swift
+weather-forecast-1/Connector/OpenWeatherApiKey.swift
