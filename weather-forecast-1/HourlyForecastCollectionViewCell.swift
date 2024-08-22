@@ -40,7 +40,7 @@ class HourlyForecastCollectionViewCell: UICollectionViewCell {
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "32ºC"
+        label.text = "\(Calendar.current.component(.minute, from: Date()))ºC"
         label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         label.textColor = .white
         label.textAlignment = .center
@@ -65,7 +65,7 @@ class HourlyForecastCollectionViewCell: UICollectionViewCell {
        return stack
     }()
     
-    private func setupView() {
+     private func setupView() {
         setupHierarchy()
         setupConstraints()
     }

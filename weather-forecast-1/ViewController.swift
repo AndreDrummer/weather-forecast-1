@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     
+    
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage.background
@@ -36,18 +37,18 @@ class ViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 20)
         label.text = cityName()
         label.textAlignment = .center
-        label.textColor = UIColor.appPrimaryColor
+        label.textColor = UIColor.appPrimary
         
         return label
     }()
     
-    private lazy var temperature: UILabel = {
+    private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = temperatureValue()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 72, weight: .bold)
-        label.textColor = UIColor.appPrimaryColor
+        label.font = UIFont.systemFont(ofSize: 64, weight: .bold)
+        label.textColor = UIColor.appPrimary
         
         return label
     }()
@@ -166,6 +167,28 @@ class ViewController: UIViewController {
         )
         return collectionView
     }()
+    
+    private lazy var dailyForecastLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "PRÓXIMOS DIAS"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        
+        return label
+    }()
+    
+    private lazy var dailyForecastTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.backgroundColor = .clear
+        tableView.register(DailyForecastTableViewCell.self,
+                           forCellReuseIdentifier: DailyForecastTableViewCell.identifier)
+        tableView.dataSource = self
+        tableView.separatorColor = .white
+        return tableView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -184,10 +207,12 @@ class ViewController: UIViewController {
         view.addSubview(vStackView)
         view.addSubview(hourlyForecastLabel)
         view.addSubview(hourlyCollectionView)
+        view.addSubview(dailyForecastLabel)
+        view.addSubview(dailyForecastTableView)
         
         
         headerView.addSubview(cityLabel)
-        headerView.addSubview(temperature)
+        headerView.addSubview(temperatureLabel)
         headerView.addSubview(weatherIcon)
         
         humidityStackview.addArrangedSubview(humidityLabel)
@@ -209,7 +234,7 @@ class ViewController: UIViewController {
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60),
             headerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 35),
             headerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -35),
-            headerView.heightAnchor.constraint(equalToConstant: 169),
+            headerView.heightAnchor.constraint(equalToConstant: 152),
         ])
         
         
@@ -221,17 +246,17 @@ class ViewController: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            temperature.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 21),
-            temperature.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 26),
+            temperatureLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 21),
+            temperatureLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 26),
         ])
         
         
         NSLayoutConstraint.activate([
-            weatherIcon.heightAnchor.constraint(equalToConstant: 86),
-            weatherIcon.widthAnchor.constraint(equalToConstant: 86),
+            weatherIcon.heightAnchor.constraint(equalToConstant: 72),
+            weatherIcon.widthAnchor.constraint(equalToConstant: 72),
             weatherIcon.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -26),
-            weatherIcon.centerYAnchor.constraint(equalTo: temperature.centerYAnchor),
-            weatherIcon.leadingAnchor.constraint(equalTo: temperature.trailingAnchor, constant: 15),
+            weatherIcon.centerYAnchor.constraint(equalTo: temperatureLabel.centerYAnchor),
+            weatherIcon.leadingAnchor.constraint(equalTo: temperatureLabel.trailingAnchor, constant: 15),
         ])
         
         NSLayoutConstraint.activate([
@@ -250,7 +275,15 @@ class ViewController: UIViewController {
             hourlyCollectionView.heightAnchor.constraint(equalToConstant: 84),
             hourlyCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             hourlyCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
+        ])
+        
+        NSLayoutConstraint.activate([
+            dailyForecastLabel.topAnchor.constraint(equalTo: hourlyCollectionView.bottomAnchor, constant: 29),
+            dailyForecastLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            dailyForecastTableView.topAnchor.constraint(equalTo: dailyForecastLabel.bottomAnchor, constant: 16),
+            dailyForecastTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            dailyForecastTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            dailyForecastTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
         
     }
@@ -288,6 +321,19 @@ extension ViewController: UICollectionViewDataSource {
             for: indexPath
         )
         
+        return cell
+    }
+}
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 10 }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: DailyForecastTableViewCell.identifier,
+            for: indexPath
+        )
+
         return cell
     }
 }
