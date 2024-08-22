@@ -45,3 +45,10 @@ struct Temp: Codable {
     let day, min, max, night: Double
     let eve, morn: Double
 }
+
+// MARK: - City
+struct City {
+    let name: String
+    let lat: String
+    let lon: String
+}

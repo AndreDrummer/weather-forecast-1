@@ -20,6 +20,7 @@
 		3617CCEF2C77DD8900A70A81 /* ForecastResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617CCEE2C77DD8900A70A81 /* ForecastResponse.swift */; };
 		3617CCF12C77E7FA00A70A81 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 3617CCF02C77E7FA00A70A81 /* .gitignore */; };
 		3617CCF32C77E82D00A70A81 /* OpenWeatherApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617CCF22C77E82D00A70A81 /* OpenWeatherApiKey.swift */; };
+		3617CCF62C77FA6500A70A81 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617CCF52C77FA6500A70A81 /* Repository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		3617CCEE2C77DD8900A70A81 /* ForecastResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForecastResponse.swift; sourceTree = "<group>"; };
 		3617CCF02C77E7FA00A70A81 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		3617CCF22C77E82D00A70A81 /* OpenWeatherApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherApiKey.swift; sourceTree = "<group>"; };
+		3617CCF52C77FA6500A70A81 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 		3604F2232C7538BE00F46C62 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				3617CCF42C77FA5100A70A81 /* Repository */,
 				3617CCED2C77DD7300A70A81 /* Model */,
 				3604F22A2C753BC400F46C62 /* UIView+Extensions.swift */,
 			);
@@ -110,6 +113,14 @@
 				3617CCEE2C77DD8900A70A81 /* ForecastResponse.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		3617CCF42C77FA5100A70A81 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				3617CCF52C77FA6500A70A81 /* Repository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,6 +202,7 @@
 				3604F2222C750A0600F46C62 /* HourlyForecastCollectionViewCell.swift in Sources */,
 				3617CCF32C77E82D00A70A81 /* OpenWeatherApiKey.swift in Sources */,
 				3604F22E2C753C8700F46C62 /* API.swift in Sources */,
+				3617CCF62C77FA6500A70A81 /* Repository.swift in Sources */,
 				3604F2102C74055300F46C62 /* SceneDelegate.swift in Sources */,
 				3617CCEF2C77DD8900A70A81 /* ForecastResponse.swift in Sources */,
 			);

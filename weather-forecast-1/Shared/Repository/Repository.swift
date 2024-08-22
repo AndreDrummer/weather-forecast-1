@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+class Repository {
+    func getCity() -> City {
+        return City(
+            name: "Aparecida de Goiânia",            
+            lat: "-16.8230691",
+            lon: "-49.2687242"
+        )
+    }
+    
+    func temperatureValue() -> String {
+        let currentHour = Calendar.current.component(.hour, from: Date())
+        return "\(currentHour)ºC"
+    }
+}

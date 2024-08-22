@@ -8,21 +8,38 @@
 import UIKit
 
 class ViewController: UIViewController {
+    private var forecastResponse: ForecastResponse?
+    private let repository = Repository()
     private let service = Service()
+    private var currentCity: City?
     
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         
-        let city = City(
-            name: "Aparecida de Goiânia",
-            lat: "-16.8221599",
-            lon: "-49.2740054"
-        )
+        currentCity = repository.getCity()
         
-        service.fecthData(city: city) { message in
-            print(message)
+        fetchData()
+                                    
+    }
+    
+    private func fetchData() {
+        service.fecthData(city: currentCity!) { [weak self] response in
+            
+            self?.forecastResponse = response
+            DispatchQueue.main.async {
+                self?.loadData()
+            }
         }
+    }
+    
+    private func loadData() {
+        cityLabel.text = currentCity!.name
+
+        temperatureLabel.text = "\(Int(forecastResponse?.current.temp ?? 0))ºC"
+        humidityValueLabel.text = "\(Int(forecastResponse?.current.humidity ?? 0))mm"
+        windValueLabel.text = "\(Int(forecastResponse?.current.windSpeed ?? 0))km/h"
     }
     
     
@@ -47,9 +64,7 @@ class ViewController: UIViewController {
     private lazy var cityLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        
         label.font = UIFont.systemFont(ofSize: 20)
-        label.text = cityName()
         label.textAlignment = .center
         label.textColor = UIColor.appPrimary
         
@@ -59,9 +74,8 @@ class ViewController: UIViewController {
     private lazy var temperatureLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = temperatureValue()
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 64, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 56, weight: .bold)
         label.textColor = UIColor.appPrimary
         
         return label
@@ -69,8 +83,8 @@ class ViewController: UIViewController {
     
     private lazy var weatherIcon: UIImageView = {
         let icon = UIImageView()
-        icon.image = weatherImage()
         icon.translatesAutoresizingMaskIntoConstraints = false
+        icon.image = UIImage.sunIcon
         
         return icon
     }()
@@ -91,7 +105,6 @@ class ViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        label.text = "1000mm"
         
         label.textColor = .white
         
@@ -105,9 +118,7 @@ class ViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.text = "Vento"
-        
         label.textColor = .white
-        
         
         return label
     }()
@@ -116,8 +127,6 @@ class ViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        label.text = "10Km/h"
-        
         label.textColor = .white
         
         return label
@@ -136,7 +145,6 @@ class ViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [windLabel, windValueLabel])
         stackView.axis = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         
         return stackView
     }()
