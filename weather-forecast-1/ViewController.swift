@@ -8,7 +8,22 @@
 import UIKit
 
 class ViewController: UIViewController {
+    private let service = Service()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupView()
+        
+        let city = City(
+            name: "Aparecida de Goiânia",
+            lat: "-16.8221599",
+            lon: "-49.2740054"
+        )
+        
+        service.fecthData(city: city) { message in
+            print(message)
+        }
+    }
     
     
     private lazy var backgroundView: UIImageView = {
@@ -18,7 +33,6 @@ class ViewController: UIViewController {
         view.contentMode = .scaleAspectFill
         return view
     }()
-    
     
     private lazy var headerView: UIView = {
         let view = UIView()
@@ -52,7 +66,7 @@ class ViewController: UIViewController {
         
         return label
     }()
-
+    
     private lazy var weatherIcon: UIImageView = {
         let icon = UIImageView()
         icon.image = weatherImage()
@@ -62,7 +76,7 @@ class ViewController: UIViewController {
     }()
     
     private lazy var humidityLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.text = "Umidade"
@@ -74,7 +88,7 @@ class ViewController: UIViewController {
     }()
     
     private lazy var humidityValueLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.text = "1000mm"
@@ -87,7 +101,7 @@ class ViewController: UIViewController {
     
     
     private lazy var windLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.text = "Vento"
@@ -99,36 +113,36 @@ class ViewController: UIViewController {
     }()
     
     private lazy var windValueLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.text = "10Km/h"
         
         label.textColor = .white
-                
+        
         return label
     }()
     
     private lazy var humidityStackview: UIStackView = {
-       let stackView = UIStackView()
+        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         
         return stackView
     }()
     
     private lazy var windStackview: UIStackView = {
-       let stackView = UIStackView(arrangedSubviews: [windLabel, windValueLabel])
+        let stackView = UIStackView(arrangedSubviews: [windLabel, windValueLabel])
         stackView.axis = .horizontal
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         
         return stackView
     }()
     
     private lazy var vStackView: UIStackView = {
-       let stackView = UIStackView(arrangedSubviews: [humidityStackview, windStackview])
+        let stackView = UIStackView(arrangedSubviews: [humidityStackview, windStackview])
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 3
@@ -147,7 +161,7 @@ class ViewController: UIViewController {
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         label.textColor = .white
-                
+        
         return label
     }()
     
@@ -189,11 +203,6 @@ class ViewController: UIViewController {
         tableView.separatorColor = .white
         return tableView
     }()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-    }
     
     private func setupView() {
         setHierarchy()
@@ -224,10 +233,10 @@ class ViewController: UIViewController {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-           backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
-           backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-           backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-           backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -287,13 +296,13 @@ class ViewController: UIViewController {
         ])
         
     }
-       
+    
     
     // View Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-        
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -306,8 +315,8 @@ class ViewController: UIViewController {
         super.viewDidDisappear(animated)
     }
     
-
-
+    
+    
 }
 
 extension ViewController: UICollectionViewDataSource {
@@ -333,7 +342,7 @@ extension ViewController: UITableViewDataSource {
             withIdentifier: DailyForecastTableViewCell.identifier,
             for: indexPath
         )
-
+        
         return cell
     }
 }
