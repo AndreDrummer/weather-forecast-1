@@ -21,6 +21,7 @@
 		3617CCF12C77E7FA00A70A81 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 3617CCF02C77E7FA00A70A81 /* .gitignore */; };
 		3617CCF32C77E82D00A70A81 /* OpenWeatherApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617CCF22C77E82D00A70A81 /* OpenWeatherApiKey.swift */; };
 		3617CCF62C77FA6500A70A81 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617CCF52C77FA6500A70A81 /* Repository.swift */; };
+		3617CCF82C78CF9900A70A81 /* Core+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3617CCF72C78CF9900A70A81 /* Core+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		3617CCF02C77E7FA00A70A81 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = SOURCE_ROOT; };
 		3617CCF22C77E82D00A70A81 /* OpenWeatherApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherApiKey.swift; sourceTree = "<group>"; };
 		3617CCF52C77FA6500A70A81 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		3617CCF72C78CF9900A70A81 /* Core+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				3604F2182C74055500F46C62 /* LaunchScreen.storyboard */,
 				3604F21B2C74055500F46C62 /* Info.plist */,
 				3604F2312C76AFDD00F46C62 /* DailyForecastTableViewCell.swift */,
+				3617CCF72C78CF9900A70A81 /* Core+Extensions.swift */,
 			);
 			path = "weather-forecast-1";
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				3617CCF62C77FA6500A70A81 /* Repository.swift in Sources */,
 				3604F2102C74055300F46C62 /* SceneDelegate.swift in Sources */,
 				3617CCEF2C77DD8900A70A81 /* ForecastResponse.swift in Sources */,
+				3617CCF82C78CF9900A70A81 /* Core+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
