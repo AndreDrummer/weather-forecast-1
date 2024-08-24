@@ -10,7 +10,9 @@ import UIKit
 class HourlyForecastCollectionViewCell: UICollectionViewCell {
     static let identifier = "HourlyForecast"
     
+    
     override init(frame: CGRect) {
+        
         super.init(frame: frame)
         
         setupView()
@@ -59,16 +61,16 @@ class HourlyForecastCollectionViewCell: UICollectionViewCell {
         stack.layer.borderColor = UIColor.white.cgColor
         stack.axis = .vertical
         
-       return stack
+        return stack
     }()
     
     func loadData(hour: String?, icon: UIImage?, temp: String?) {
         hourLabel.text = hour
         temperatureLabel.text = temp
-        weatherIcon.image = icon                
+        weatherIcon.image = icon
     }
     
-     private func setupView() {
+    private func setupView() {
         setupHierarchy()
         setupConstraints()
     }

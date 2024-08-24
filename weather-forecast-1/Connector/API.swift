@@ -13,7 +13,7 @@ class Service {
     private let session: URLSession = URLSession.shared
 
     func fecthData(city: City, _ completion: @escaping (ForecastResponse?) -> Void) {
-        let url = "\(baseURL)?lat=\(city.lat)&lon=\(city.lon)&appid=\(apiKey)&units=metric"
+        let url = "\(baseURL)?lat=\(city.location.lat)&lon=\(city.location.lng)&appid=\(apiKey)&units=metric"
         
         guard let requestURL = URL(string: url) else { return }
         

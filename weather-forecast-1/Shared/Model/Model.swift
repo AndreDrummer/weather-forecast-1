@@ -47,8 +47,13 @@ struct Temp: Codable {
 }
 
 // MARK: - City
-struct City {
-    let name: String
+struct Location {
     let lat: String
-    let lon: String
+    let lng: String
+}
+
+// MARK: - City
+struct City {
+    let location: Location
+    let name: String
 }

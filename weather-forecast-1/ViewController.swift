@@ -6,30 +6,91 @@
 //
 
 import UIKit
+import CoreLocation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
+
+    private var locationManager: CLLocationManager!
     private var forecastResponse: ForecastResponse?
-    private let repository = Repository()
     private let service = Service()
     private var currentCity: City?
+    private var location: Location!
+    private var activityIndicator: UIActivityIndicatorView!
     
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        setupActivityIndicator()
+        // Start the activity indicator
+        activityIndicator.startAnimating()
+        handleCurrentLocation()
+    }
+    
+    private func handleCurrentLocation() {
+        // Initialize the locationManager
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
-        currentCity = repository.getCity()
-        
-        fetchData()
-                                    
+        // Request authorization from the user
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    // Delegate method called when the authorization status changes
+        func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+            let status = manager.authorizationStatus
+            
+            print("Status \(manager.authorizationStatus)")
+
+            switch status {
+            case .authorizedWhenInUse, .authorizedAlways:
+                // Start updating location only if authorized
+                locationManager.startUpdatingLocation()
+            case .denied, .restricted:
+                // Handle the case where the user has denied location access
+                print("Location services are not available.")
+            case .notDetermined:
+                // Still waiting for authorization
+                break
+            @unknown default:
+                break
+            }
+        }
+
+        // Delegate method called when the location is updated
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            if let coreLocation = locations.first {
+                
+                self.location = Location(
+                    lat: "\(coreLocation.coordinate.latitude)",
+                    lng: "\(coreLocation.coordinate.longitude)"
+                )
+                fetchData()
+                locationManager.stopUpdatingLocation()
+            }
+        }
+
+        // Handle errors
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print("Failed to get location: \(error.localizedDescription)")
+        }
+    
+    private func getCity() -> City {
+        return City(
+            location: location,
+            name: "Aparecida de Goiânia"
+        )
     }
     
     private func fetchData() {
+        currentCity = getCity()
         service.fecthData(city: currentCity!) { [weak self] response in
             
             self?.forecastResponse = response
             DispatchQueue.main.async {
                 self?.loadData()
+                self?.setupView()
+                self?.activityIndicator.stopAnimating()
             }
         }
     }
@@ -41,6 +102,8 @@ class ViewController: UIViewController {
         humidityValueLabel.text = "\(Int(forecastResponse?.current.humidity ?? 0))mm"
         windValueLabel.text = "\(Int(forecastResponse?.current.windSpeed ?? 0))km/h"
         
+        weatherIcon.image = UIImage(named: forecastResponse?.current.weather.first?.icon ?? "")
+        
         if(forecastResponse?.current.dt.isDayTime() ?? true) {
             backgroundView.image = UIImage.background
         } else {
@@ -49,6 +112,18 @@ class ViewController: UIViewController {
         
         hourlyCollectionView.reloadData()
         dailyForecastTableView.reloadData()
+    }
+    
+    private func startLoadingIndicator() {
+
+    }
+    
+    private func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        
+        view.addSubview(activityIndicator)
     }
     
     
@@ -93,7 +168,6 @@ class ViewController: UIViewController {
     private lazy var weatherIcon: UIImageView = {
         let icon = UIImageView()
         icon.translatesAutoresizingMaskIntoConstraints = false
-        icon.image = UIImage.sunIcon
         
         return icon
     }()
@@ -278,8 +352,8 @@ class ViewController: UIViewController {
         
         
         NSLayoutConstraint.activate([
-            weatherIcon.heightAnchor.constraint(equalToConstant: 72),
-            weatherIcon.widthAnchor.constraint(equalToConstant: 72),
+            weatherIcon.heightAnchor.constraint(equalToConstant: 104),
+            weatherIcon.widthAnchor.constraint(equalToConstant: 104),
             weatherIcon.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -26),
             weatherIcon.centerYAnchor.constraint(equalTo: temperatureLabel.centerYAnchor),
             weatherIcon.leadingAnchor.constraint(equalTo: temperatureLabel.trailingAnchor, constant: 15),
