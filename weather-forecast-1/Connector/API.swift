@@ -13,10 +13,10 @@ class Service {
     private let session: URLSession = URLSession.shared
     
     /// Uncomment the following line and provide a valid OpenWeather API key.
-    // private let apiKey: String = "<YOUR-API-KEY>"    
+    // private let apiKey: String = "<YOUR-API-KEY>"
 
-    func fecthData(city: City, _ completion: @escaping (ForecastResponse?) -> Void) {
-        let url = "\(baseURL)?lat=\(city.location.lat)&lon=\(city.location.lng)&appid=\(apiKey)&units=metric"
+    func fecthData(place: Place, _ completion: @escaping (ForecastResponse?) -> Void) {
+        let url = "\(baseURL)?lat=\(place.latLng.lat)&lon=\(place.latLng.lng)&appid=\(apiKey)&units=metric"
         
         guard let requestURL = URL(string: url) else { return }
         

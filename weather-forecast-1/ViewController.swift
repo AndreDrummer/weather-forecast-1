@@ -9,24 +9,33 @@ import UIKit
 import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
-
-    private var locationManager: CLLocationManager!
-    private var forecastResponse: ForecastResponse?
-    private let service = Service()
-    private var currentCity: City?
-    private var location: Location!
-    private var activityIndicator: UIActivityIndicatorView!
     
+    private var locationManager: CLLocationManager!
+    private var activityIndicator: UIActivityIndicatorView!
+    private var forecastResponse: ForecastResponse?
+    private var location: CLLocation!
+    private var currentPlace: Place!
+    private let service = Service()
+    
+    private func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
         
+        view.addSubview(activityIndicator)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupActivityIndicator()
+        
         // Start the activity indicator
         activityIndicator.startAnimating()
-        handleCurrentLocation()
+        getCurrentLocation()
     }
     
-    private func handleCurrentLocation() {
+    private func getCurrentLocation() {
         // Initialize the locationManager
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -37,67 +46,95 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // Delegate method called when the authorization status changes
-        func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-            let status = manager.authorizationStatus
-            
-            print("Status \(manager.authorizationStatus)")
-
-            switch status {
-            case .authorizedWhenInUse, .authorizedAlways:
-                // Start updating location only if authorized
-                locationManager.startUpdatingLocation()
-            case .denied, .restricted:
-                // Handle the case where the user has denied location access
-                print("Location services are not available.")
-            case .notDetermined:
-                // Still waiting for authorization
-                break
-            @unknown default:
-                break
-            }
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = manager.authorizationStatus
+        
+        print("Status \(manager.authorizationStatus)")
+        
+        switch status {
+        case .authorizedWhenInUse, .authorizedAlways:
+            // Start updating location only if authorized
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            // Handle the case where the user has denied location access
+            print("Location services are not available.")
+        case .notDetermined:
+            // Still waiting for authorization
+            break
+        @unknown default:
+            break
         }
-
-        // Delegate method called when the location is updated
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            if let coreLocation = locations.first {
-                
-                self.location = Location(
-                    lat: "\(coreLocation.coordinate.latitude)",
-                    lng: "\(coreLocation.coordinate.longitude)"
-                )
-                fetchData()
-                locationManager.stopUpdatingLocation()
-            }
-        }
-
-        // Handle errors
-        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            print("Failed to get location: \(error.localizedDescription)")
-        }
+    }
     
-    private func getCity() -> City {
-        return City(
-            location: location,
-            name: "Aparecida de Goiânia"
-        )
+    // Delegate method called when the location is updated
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let coreLocation = locations.first {
+            location = coreLocation
+            fetchData()
+            locationManager.stopUpdatingLocation()
+        }
+    }
+    
+    // Handle errors
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to get location: \(error.localizedDescription)")
+    }
+    
+    private func fetchCityAndState(completion: @escaping (_ latLng: LatLng?, _ city: String, _ state: String) -> Void) {
+        let geocoder = CLGeocoder()
+        
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            if let error = error {
+                print("Error with reverse geocoding: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first {
+                let state = placemark.administrativeArea ?? "Unknown state"
+                let city = placemark.locality ?? "Unknown city"
+                let latLng = LatLng(
+                    lat: "\(self.location.coordinate.latitude)",
+                    lng: "\(self.location.coordinate.longitude)"
+                )
+                
+                completion(latLng, city, state)
+            } else {
+                completion(nil, "Unknown city", "Unknown state")
+            }
+        }
+    }
+    
+    private func getPlace(completion: @escaping (Place) -> Void) {
+        
+        fetchCityAndState { latLng, city, state in
+            let place = Place(
+                latLng: latLng ?? LatLng(lat: "\(self.location.coordinate.latitude)", lng: "\(self.location.coordinate.longitude)"),
+                state: state,
+                city: city
+            )
+            
+            completion(place)
+        }
     }
     
     private func fetchData() {
-        currentCity = getCity()
-        service.fecthData(city: currentCity!) { [weak self] response in
-            
-            self?.forecastResponse = response
-            DispatchQueue.main.async {
-                self?.loadData()
-                self?.setupView()
-                self?.activityIndicator.stopAnimating()
+        getPlace { place in
+            self.currentPlace = place
+            self.service.fecthData(place: place) { [weak self] response in
+                
+                self?.forecastResponse = response
+                DispatchQueue.main.async {
+                    self?.loadData()
+                    self?.setupView()
+                    self?.activityIndicator.stopAnimating()
+                }
             }
         }
     }
     
     private func loadData() {
-        cityLabel.text = currentCity!.name
-
+        placeLabel.text = "\(currentPlace.city), \(currentPlace.state)"
+        
         temperatureLabel.text = forecastResponse?.current.temp.toCelsius()
         humidityValueLabel.text = "\(Int(forecastResponse?.current.humidity ?? 0))mm"
         windValueLabel.text = "\(Int(forecastResponse?.current.windSpeed ?? 0))km/h"
@@ -113,19 +150,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         hourlyCollectionView.reloadData()
         dailyForecastTableView.reloadData()
     }
-    
-    private func startLoadingIndicator() {
-
-    }
-    
-    private func setupActivityIndicator() {
-        activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.center = view.center
-        activityIndicator.hidesWhenStopped = true
-        
-        view.addSubview(activityIndicator)
-    }
-    
     
     private lazy var backgroundView: UIImageView = {
         let view = UIImageView()
@@ -145,7 +169,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         return view
     }()
     
-    private lazy var cityLabel: UILabel = {
+    private lazy var placeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20)
@@ -288,7 +312,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         tableView.backgroundColor = .clear
         tableView.register(DailyForecastTableViewCell.self,
                            forCellReuseIdentifier: DailyForecastTableViewCell.identifier)
-
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorColor = .white
@@ -311,7 +335,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         view.addSubview(dailyForecastTableView)
         
         
-        headerView.addSubview(cityLabel)
+        headerView.addSubview(placeLabel)
         headerView.addSubview(temperatureLabel)
         headerView.addSubview(weatherIcon)
         
@@ -339,14 +363,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         
         NSLayoutConstraint.activate([
-            cityLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
-            cityLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-            cityLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
-            cityLabel.heightAnchor.constraint(equalToConstant: 20),
+            placeLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
+            placeLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            placeLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            placeLabel.heightAnchor.constraint(equalToConstant: 20),
         ])
         
         NSLayoutConstraint.activate([
-            temperatureLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 21),
+            temperatureLabel.topAnchor.constraint(equalTo: placeLabel.bottomAnchor, constant: 21),
             temperatureLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 26),
         ])
         
