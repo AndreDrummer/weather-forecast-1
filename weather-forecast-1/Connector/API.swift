@@ -9,8 +9,11 @@ import Foundation
 import UIKit
 
 class Service {
-    private let baseURL: String = "https://api.openweathermap.org/data/3.0/onecall"    
+    private let baseURL: String = "https://api.openweathermap.org/data/3.0/onecall"
     private let session: URLSession = URLSession.shared
+    
+    /// Uncomment the following line and provide a valid OpenWeather API key.
+    // private let apiKey: String = "<YOUR-API-KEY>"    
 
     func fecthData(city: City, _ completion: @escaping (ForecastResponse?) -> Void) {
         let url = "\(baseURL)?lat=\(city.location.lat)&lon=\(city.location.lng)&appid=\(apiKey)&units=metric"
